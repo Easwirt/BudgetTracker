@@ -1,9 +1,10 @@
-package com.budget.tracker.budgettracker;
+package com.budget.tracker.budgettracker.service;
 
 import com.budget.tracker.budgettracker.dto.CreateAccountRequest;
-import com.budget.tracker.budgettracker.service.AccountService;
 import com.budget.tracker.budgettracker.persistance.model.Account;
 import com.budget.tracker.budgettracker.persistance.model.repository.AccountRepository;
+import com.budget.tracker.budgettracker.service.AccountService;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

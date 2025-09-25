@@ -1,4 +1,4 @@
-package com.budget.tracker.budgettracker;
+package com.budget.tracker.budgettracker.controllers;
 
 import com.budget.tracker.budgettracker.controllers.AccountController;
 import com.budget.tracker.budgettracker.dto.CreateAccountRequest;
