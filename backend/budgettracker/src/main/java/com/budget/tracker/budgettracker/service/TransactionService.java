@@ -1,0 +1,41 @@
+package com.budget.tracker.budgettracker.service;
+
+import com.budget.tracker.budgettracker.dto.CreateTransactionRequest;
+import com.budget.tracker.budgettracker.persistance.model.Transaction;
+import com.budget.tracker.budgettracker.persistance.model.TransactionType;
+import com.budget.tracker.budgettracker.persistance.model.repository.TransactionRepository;
+import com.budget.tracker.budgettracker.service.AccountService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+public class TransactionService {
+    
+    @Autowired
+    private TransactionRepository transactionRepository;
+    
+    @Autowired
+    private AccountService accountService;
+    
+    @Transactional
+    public Transaction createTransaction(CreateTransactionRequest request) {
+        Transaction transaction = new Transaction(
+            request.getAccountId(),
+            request.getAmount(),
+            request.getDescription(),
+            request.getCategory(),
+            request.getType()
+        );
+        
+        Transaction savedTransaction = transactionRepository.save(transaction);
+        
+        if (request.getType() == TransactionType.INCOME) {
+            accountService.updateBalance(request.getAccountId(), request.getAmount());
+        } else {
+            accountService.updateBalance(request.getAccountId(), request.getAmount().negate());
+        }
+        
+        return savedTransaction;
+    }
+}
