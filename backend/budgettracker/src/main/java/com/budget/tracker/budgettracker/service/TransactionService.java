@@ -28,13 +28,13 @@ public class TransactionService {
             request.getType()
         );
         
-        Transaction savedTransaction = transactionRepository.save(transaction);
-        
         if (request.getType() == TransactionType.INCOME) {
             accountService.updateBalance(request.getAccountId(), request.getAmount());
         } else {
             accountService.updateBalance(request.getAccountId(), request.getAmount().negate());
         }
+        
+        Transaction savedTransaction = transactionRepository.save(transaction);
         
         return savedTransaction;
     }
