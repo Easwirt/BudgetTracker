@@ -4,7 +4,10 @@ import com.budget.tracker.budgettracker.dto.CreateAccountRequest;
 import com.budget.tracker.budgettracker.persistance.model.Account;
 import com.budget.tracker.budgettracker.persistance.model.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+import java.math.BigDecimal;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
 
 @Service
@@ -21,5 +24,15 @@ public class AccountService {
         account.setCreatedAt(LocalDateTime.now());
         
         return accountRepository.save(account);
+    }
+    
+    @Transactional
+    public void updateBalance(Long accountId, BigDecimal amount) {
+        Account account = accountRepository.findById(accountId)
+            .orElseThrow(() -> new RuntimeException("Account not found with id: " + accountId));
+        
+        BigDecimal newBalance = account.getBalance().add(amount);
+        account.setBalance(newBalance);
+        accountRepository.save(account);
     }
 }
