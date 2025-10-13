@@ -7,6 +7,9 @@ import com.budget.tracker.budgettracker.persistance.model.Transaction;
 import com.budget.tracker.budgettracker.service.AccountService;
 import com.budget.tracker.budgettracker.service.TransactionService;
 import jakarta.validation.Valid;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,26 +38,26 @@ public class AccountController {
 
     @GetMapping("/account/{accountId}/transaction/{id}")
     public ResponseEntity<Transaction> getTransactionById(@PathVariable Long accountId, @PathVariable Long id) {
-        Transaction transaction = transactionService.getTransactionByAccountIdAndId(id, accountId);
-        if (transaction != null) {
+        try{
+            Transaction transaction = transactionService.getTransactionByAccountIdAndId(id, accountId);
             return new ResponseEntity<>(transaction, HttpStatus.OK);
-        } else {
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @GetMapping("/account/{accountId}/transaction")
-    public ResponseEntity<java.util.List<Transaction>> getAllTransactionsByAccountId(@PathVariable Long accountId) {
+    public ResponseEntity<List<Transaction>> getAllTransactionsByAccountId(@PathVariable Long accountId) {
         java.util.List<Transaction> transactions = transactionService.getAllTransactionsByAccountId(accountId);
         return new ResponseEntity<>(transactions, HttpStatus.OK);
     }
 
     @GetMapping("/account/{id}")
     public ResponseEntity<Account> getAccount(@PathVariable Long id) {
-        Account account = accountService.getAccountById(id);
-        if (account != null) {
+        try {
+            Account account = accountService.getAccountById(id);
             return new ResponseEntity<>(account, HttpStatus.OK);
-        } else {
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
