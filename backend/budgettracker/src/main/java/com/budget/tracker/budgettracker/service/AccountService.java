@@ -35,4 +35,9 @@ public class AccountService {
         account.setBalance(newBalance);
         accountRepository.save(account);
     }
+
+    public Account getAccountById(Long id) {
+        return accountRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Account not found with id: " + id));
+    }
 }

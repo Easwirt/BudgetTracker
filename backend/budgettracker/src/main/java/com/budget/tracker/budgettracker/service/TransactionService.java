@@ -4,7 +4,7 @@ import com.budget.tracker.budgettracker.dto.CreateTransactionRequest;
 import com.budget.tracker.budgettracker.persistance.model.Transaction;
 import com.budget.tracker.budgettracker.persistance.model.TransactionType;
 import com.budget.tracker.budgettracker.persistance.model.repository.TransactionRepository;
-import com.budget.tracker.budgettracker.service.AccountService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,5 +37,13 @@ public class TransactionService {
         Transaction savedTransaction = transactionRepository.save(transaction);
         
         return savedTransaction;
+    }
+
+    public List<Transaction> getAllTransactionsByAccountId(Long accountId) {
+        return transactionRepository.findAllByAccountId(accountId);
+    }
+
+    public Transaction getTransactionByAccountIdAndId(Long transactionId, Long accountId) {
+        return transactionRepository.findByTransactionIdAndAccountId(transactionId, accountId);
     }
 }

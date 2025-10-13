@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
 @RequestMapping("/api")
@@ -28,9 +29,36 @@ public class AccountController {
         return new ResponseEntity<>(createdAccount, HttpStatus.CREATED);
     }
     
-    @PostMapping("/transactions")
+    @PostMapping("/transaction")
     public ResponseEntity<Transaction> createTransaction(@Valid @RequestBody CreateTransactionRequest request) {
         Transaction createdTransaction = transactionService.createTransaction(request);
         return new ResponseEntity<>(createdTransaction, HttpStatus.CREATED);
     }
+
+    @GetMapping("/account/{accountId}/transaction/{id}")
+    public ResponseEntity<Transaction> getTransactionById(@PathVariable Long accountId, @PathVariable Long id) {
+        Transaction transaction = transactionService.getTransactionByAccountIdAndId(id, accountId);
+        if (transaction != null) {
+            return new ResponseEntity<>(transaction, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/account/{accountId}/transaction")
+    public ResponseEntity<java.util.List<Transaction>> getAllTransactionsByAccountId(@PathVariable Long accountId) {
+        java.util.List<Transaction> transactions = transactionService.getAllTransactionsByAccountId(accountId);
+        return new ResponseEntity<>(transactions, HttpStatus.OK);
+    }
+
+    @GetMapping("/account/{id}")
+    public ResponseEntity<Account> getAccount(@PathVariable Long id) {
+        Account account = accountService.getAccountById(id);
+        if (account != null) {
+            return new ResponseEntity<>(account, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    
 }
