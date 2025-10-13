@@ -57,7 +57,7 @@ public class WebSecurityConfig {
         http
 			.csrf(csrf -> csrf.disable())
 			.authorizeHttpRequests(auth -> auth
-				.requestMatchers("/signup", "/login").permitAll()
+				.requestMatchers("/signup", "/login", "swagger-ui/**", "/v3/api-docs/**").permitAll()
 				.anyRequest().authenticated()
 			)
 			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
